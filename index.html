@@ -133,7 +133,19 @@
         
         .last {padding: 50px; text-align: center; font-size: x-large; }
 
-    
+    .scroll-for-more {
+  /* Smoothly animate changes over 0.3 seconds */
+  transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.3s ease;
+  
+  cursor: pointer;
+  display: inline-block; /* Required for transform to work on inline elements */
+}
+
+/* When the user hovers over it, it nudges downward */
+.scroll-for-more:hover {
+  transform: translateY(8px);
+  opacity: 0.7;
+}
     </style>
 </head>
 <body class="night">
@@ -152,7 +164,7 @@
 
     <section class="story-section" id="cards-container"></section>
     
-    <div class="scroll"> scroll for more</div>
+    <div class="scroll-for-more"> scroll for more</div>
     <div class="footer">I love you infinitely... ❤️</div>
     <div class="last one">ဒါနဲ့ react ကို အများကြီး လုပ်လို့ရ‌‌‌အောင်ထည့်ထားတယ်‌နော် ဟဲဟဲ</div>
 
@@ -314,6 +326,7 @@
 </body>
 
 </html>
+
 
 
 
