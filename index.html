@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Magic Love ❤️</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@300;400;600&display=swap');
+
+        :root {
+            --primary: #ff4d6d;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        body.night {
+            background-color: #000;
+            color: #fff;
+            --card-bg: rgba(255, 255, 255, 0.05);
+            --border-color: rgba(255, 255, 255, 0.1);
+            --badge-bg: rgba(255, 255, 255, 0.1);
+            --panel-bg: #1c1c1d;
+        }
+
+        body.day {
+            background-color: #ffffff;
+            color: #000000;
+            --card-bg: #ffffff;
+            --border-color: #000000;
+            --badge-bg: #f0f0f0;
+            --panel-bg: #ffffff;
+        }
+
+        body {
+            margin: 0; padding: 0;
+            font-family: 'Poppins', sans-serif;
+            transition: var(--transition);
+            overflow-x: hidden; scroll-behavior: smooth;
+        }
+
+        .stars-container {
+            position: fixed; width: 100%; height: 100%;
+            z-index: -1; pointer-events: none;
+            display: none;
+        }
+        body.night .stars-container { display: block; background: radial-gradient(circle at center, #1b1b1b 0%, #000 100%); }
+
+        .theme-toggle {
+            position: fixed; top: 20px; right: 20px;
+            z-index: 1000; background: var(--primary);
+            color: white; border: none; padding: 10px 15px;
+            border-radius: 50px; cursor: pointer; font-weight: 600;
+        }
+
+        .hero {
+            height: 100vh; display: flex; flex-direction: column;
+            justify-content: center; align-items: center; text-align: center;
+        }
+
+        .hero h1 {
+            font-family: 'Dancing Script', cursive;
+            font-size: 4rem; color: var(--primary);
+            margin-bottom: 5px; animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes glow {
+            from { text-shadow: 0 0 10px #ff4d6d; }
+            to { text-shadow: 0 0 20px #ff8fa3; }
+        }
+
+        #counter { font-size: 2.2rem; font-weight: 600; margin-top: 10px; letter-spacing: 2px; }
+        
+        #duration {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            margin-top: 5px;
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(90deg, var(--primary), #ff8fa3);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 600;
+        }
+
+        .anni-animate {
+            display: inline-block;
+            animation: heartBeat 1.5s infinite;
+            color: var(--primary);
+            font-family: 'Dancing Script', cursive;
+            font-size: 3rem;
+        }
+
+        @keyframes heartBeat {
+            0%, 28%, 70% { transform: scale(1); }
+            14%, 42% { transform: scale(1.1); }
+        }
+
+        .story-section { padding: 80px 20px; max-width: 800px; margin: 0 auto; }
+
+        .magic-card {
+            background: var(--card-bg);
+            border: 2px solid var(--border-color);
+            border-radius: 20px; padding: 40px; margin-bottom: 40px;
+            position: relative; transition: var(--transition);
+        }
+        body.day .magic-card { box-shadow: 10px 10px 0px #000; }
+
+        .magic-card i.main-icon { font-size: 2.5rem; color: var(--primary); margin-bottom: 20px; }
+
+        .reaction-container { display: flex; gap: 8px; margin-top: 25px; flex-wrap: wrap; }
+        
+        .react-badge {
+            background: var(--badge-bg);
+            padding: 6px 12px; border-radius: 15px;
+            cursor: pointer; transition: 0.2s; display: flex; align-items: center; gap: 6px;
+        }
+        .react-badge.active { background: rgba(255, 77, 109, 0.2); border-color: var(--primary); }
+
+        .emoji-panel {
+            position: absolute; bottom: 80px; left: 20px;
+            background: var(--panel-bg); border: 2px solid var(--border-color);
+            padding: 15px; border-radius: 15px; display: none;
+            grid-template-columns: repeat(6, 1fr); gap: 10px; z-index: 100;
+            width: 280px;
+        }
+
+        .floating-heart {
+            position: absolute; pointer-events: none;
+            animation: fly 3s linear forwards; color: var(--primary);
+        }
+        @keyframes fly { to { transform: translateY(-150px) translateX(50px); opacity: 0; } }
+
+        .footer { padding: 50px; text-align: center; font-family: 'Dancing Script', cursive; font-size: 2rem; }
+        
+        .last {padding: 50px; text-align: center; font-size: x-large; }
+    </style>
+</head>
+<body class="night">
+
+    <div class="stars-container" id="stars"></div>
+    <button class="theme-toggle" onclick="toggleTheme()">
+        <i id="theme-icon" class="fas fa-sun"></i> <span id="theme-text">Day Mode</span>
+    </button>
+
+    <section class="hero">
+        <h1>To My Everything,</h1>
+        <div id="counter">0 Days of Loving You</div>
+        <div id="duration">Counting our forever...</div>
+        <p style="margin-top: 25px; opacity: 0.5; font-size: 0.8rem;">(Burmese Standard Time GMT+6:30)</p>
+    </section>
+
+    <section class="story-section" id="cards-container"></section>
+
+    <div class="footer">I love you infinitely... ❤️</div>
+    <div class="last one">ဒါနဲ့ react ကို အများကြီး လုပ်လို့ရ‌‌‌အောင်ထည့်ထားတယ်‌နော် ဟဲဟဲ</div>
+
+    <script>
+        const cardsData = [
+            { id: 'p1', icon: 'fa-feather-alt', title: 'The Promise', text: 'ဘယ်လိုအခက်အခဲတွေပဲ ကြုံရပါစေ၊ ကိုကို့ဘက်က သဲသဲလက်ကို အမြဲမြဲမြဲဆုပ်ကိုင်ထားမယ်လို့ ကတိပေးပါတယ်။' },
+            { id: 'p2', icon: 'fa-moon', title: 'Under the Same Sky', text: 'ကိုကိုတို့ဝေးသွားခဲ့ရင်တောင် ဘာအကြောင်းကြောင့်ပဲဖြစ်ဖြစ် သဲသဲလေးကို ရအောင် ပြန်ရှာမှာပါ။' },
+            { id: 'p3', icon: 'fa-heartbeat', title: 'Every Beat', text: 'ကိုကို့နှလုံးခုန်သံတိုင်းက သဲသဲလေးအတွက်ပါပဲ... သဲသဲလေးက ကိုကို့ဘဝရဲ့ အဓိပ္ပာယ်ပါပဲ။' }
+        ];
+
+        const emojis = ["❤️", "💖", "💗", "💓", "💝", "💕", "💘", "✨", "🌸", "🌹", "🧸", "💍", "🥰", "😍", "😘", "👩‍❤️‍👨", "🫂", "💌", "🤞", "🍭", "🦋", "🥂", "💒", "♾️"];
+
+        let state = JSON.parse(localStorage.getItem('love_v6_data')) || {
+            reacts: { p1: {}, p2: {}, p3: {} },
+            myReacts: { p1: [], p2: [], p3: [] },
+            theme: 'night'
+        };
+
+        function toggleTheme() {
+            state.theme = state.theme === 'night' ? 'day' : 'night';
+            save();
+        }
+
+        function save() {
+            localStorage.setItem('love_v6_data', JSON.stringify(state));
+            render();
+        }
+
+        function updateClock() {
+            // 1. SET BURMESE CURRENT TIME
+            const now = new Date();
+            const mmOffset = 6.5 * 60 * 60 * 1000;
+            const mmNow = new Date(now.getTime() + (now.getTimezoneOffset() * 60000) + mmOffset);
+
+            // 2. SET START TIME (Dec 5, 2024, 00:00:00 Myanmar)
+            const mmStart = new Date(2024, 11, 5, 0, 0, 0); 
+
+            // Calculate Total Days (Header)
+            const diffMs = mmNow - mmStart;
+            const totalDays = Math.floor(diffMs / (1000 * 60 * 60 * 24)) + 1;
+            
+            const counterEl = document.getElementById('counter');
+            const durationEl = document.getElementById('duration');
+
+            // Anniversary Logic
+            const isDec5 = (mmNow.getMonth() === 11 && mmNow.getDate() === 5);
+            if (isDec5 && mmNow.getFullYear() > 2024) {
+                const yearsAnni = mmNow.getFullYear() - 2024;
+                const yearWords = ["", "One", "Two", "Three", "Four", "Five"];
+                counterEl.innerHTML = `<span class="anni-animate">${yearWords[yearsAnni] || yearsAnni} Year Anniversary ❤️</span>`;
+            } else {
+                counterEl.innerText = totalDays + " Days of Loving You";
+            }
+
+            // 3. CALENDAR ACCURATE BREAKDOWN (Years, Months, Days, etc.)
+            let y = mmNow.getFullYear() - mmStart.getFullYear();
+            let m = mmNow.getMonth() - mmStart.getMonth();
+            let d = mmNow.getDate() - mmStart.getDate();
+            let hh = mmNow.getHours() - mmStart.getHours();
+            let min = mmNow.getMinutes() - mmStart.getMinutes();
+            let sec = mmNow.getSeconds() - mmStart.getSeconds();
+
+            if (sec < 0) { min--; sec += 60; }
+            if (min < 0) { hh--; min += 60; }
+            if (hh < 0) { d--; hh += 24; }
+            if (d < 0) {
+                m--;
+                let prevMonth = new Date(mmNow.getFullYear(), mmNow.getMonth(), 0);
+                d += prevMonth.getDate();
+            }
+            if (m < 0) { y--; m += 12; }
+
+            durationEl.innerText = `${y} year, ${m} months, ${d} days, ${hh} hours, ${min} mins, ${sec} secs`;
+        }
+
+        function render() {
+            document.body.className = state.theme;
+            const btnIcon = document.getElementById('theme-icon');
+            const btnText = document.getElementById('theme-text');
+            btnIcon.className = state.theme === 'night' ? 'fas fa-sun' : 'fas fa-moon';
+            btnText.innerText = state.theme === 'night' ? 'Day Mode' : 'Night Mode';
+
+            const container = document.getElementById('cards-container');
+            container.innerHTML = cardsData.map(card => `
+                <div class="magic-card" onclick="createHearts(event)">
+                    <i class="fas ${card.icon} main-icon"></i>
+                    <h3>${card.title}</h3>
+                    <p>${card.text}</p>
+                    <div class="reaction-container">
+                        ${Object.entries(state.reacts[card.id]).map(([emoji, count]) => `
+                            <div class="react-badge ${state.myReacts[card.id].includes(emoji) ? 'active' : ''}" 
+                                 onclick="event.stopPropagation(); toggleReact('${card.id}', '${emoji}')">
+                                ${emoji} ${count}
+                            </div>
+                        `).join('')}
+                        <div class="add-react-btn" onclick="showPicker(event, '${card.id}')">
+                            <i class="far fa-smile"></i>
+                        </div>
+                        <div class="emoji-panel" id="picker-${card.id}">
+                            ${emojis.map(e => `<span onclick="toggleReact('${card.id}', '${e}')">${e}</span>`).join('')}
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function toggleReact(id, emoji) {
+            const idx = state.myReacts[id].indexOf(emoji);
+            if (idx > -1) {
+                state.reacts[id][emoji]--;
+                state.myReacts[id].splice(idx, 1);
+                if (state.reacts[id][emoji] <= 0) delete state.reacts[id][emoji];
+            } else {
+                state.reacts[id][emoji] = (state.reacts[id][emoji] || 0) + 1;
+                state.myReacts[id].push(emoji);
+            }
+            save();
+        }
+
+        function showPicker(e, id) {
+            e.stopPropagation();
+            document.querySelectorAll('.emoji-panel').forEach(p => p.style.display = 'none');
+            const picker = document.getElementById(`picker-${id}`);
+            picker.style.display = 'grid';
+        }
+
+        function createHearts(event) {
+            for(let i=0; i<6; i++) {
+                const heart = document.createElement('i');
+                heart.className = 'fas fa-heart floating-heart';
+                heart.style.left = (event.clientX + (Math.random() - 0.5) * 80) + 'px';
+                heart.style.top = (event.clientY + (Math.random() - 0.5) * 80) + 'px';
+                heart.style.fontSize = (Math.random() * 15 + 10) + 'px';
+                document.body.appendChild(heart);
+                setTimeout(() => heart.remove(), 3000);
+            }
+        }
+
+        function makeStars() {
+            const container = document.getElementById('stars');
+            container.innerHTML = '';
+            for(let i=0; i<100; i++) {
+                const star = document.createElement('div');
+                star.style.position = 'absolute'; star.style.width = '2px'; star.style.height = '2px';
+                star.style.background = 'white'; star.style.left = Math.random() * 100 + 'vw';
+                star.style.top = Math.random() * 100 + 'vh'; star.style.opacity = Math.random();
+                container.appendChild(star);
+            }
+        }
+
+        window.onload = () => { 
+            makeStars(); 
+            render(); 
+            updateClock();
+            setInterval(updateClock, 1000); 
+        };
+        window.onclick = () => document.querySelectorAll('.emoji-panel').forEach(p => p.style.display = 'none');
+    </script>
+</body>
+</html>
