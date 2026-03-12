@@ -13,20 +13,47 @@
             --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-
+        /* --- UPDATED SCROLL STYLE --- */
         .scroll-for-more {
-  /* Smoothly animate changes over 0.3 seconds */
-  transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.3s ease;
-  
-  cursor: pointer;
-  display: inline-block; /* Required for transform to work on inline elements */
-}
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            transition: var(--transition);
+            z-index: 100;
+            font-weight: 600;
+            color: var(--primary);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-size: 0.8rem;
+        }
 
-/* When the user hovers over it, it nudges downward */
-.scroll-for-more:hover {
-  transform: translateY(8px);
-  opacity: 0.7;
-}
+        .scroll-for-more i {
+            font-size: 1.2rem;
+            transition: transform 0.3s ease;
+        }
+
+        .scroll-for-more:hover {
+            opacity: 0.7;
+        }
+
+        .scroll-for-more:hover i {
+            transform: translateY(5px);
+        }
+
+        /* Hide when scrolling down */
+        .scroll-hidden {
+            opacity: 0;
+            pointer-events: none;
+            transform: translateX(-50%) translateY(20px);
+        }
+        /* --------------------------- */
+
         body.night {
             background-color: #000;
             color: #fff;
@@ -143,7 +170,7 @@
         }
         @keyframes fly { to { transform: translateY(-150px) translateX(50px); opacity: 0; } }
 
-        .footer { padding: 50px; text-align: center; font-family: 'Dancing Script', cursive; font-size: 2rem; }
+        .footer { padding: 100px 50px; text-align: center; font-family: 'Dancing Script', cursive; font-size: 2rem; }
         
         .last {padding: 50px; text-align: center; font-size: x-large; }
 
@@ -163,9 +190,13 @@
         <p style="margin-top: 25px; opacity: 0.5; font-size: 0.8rem;">(Burmese Standard Time GMT+6:30)</p>
     </section>
 
+    <div class="scroll-for-more" id="scrollIndicator" onclick="window.scrollTo(0, window.innerHeight)">
+        <span>Scroll for magic</span>
+        <i class="fas fa-chevron-down"></i>
+    </div>
+
     <section class="story-section" id="cards-container"></section>
     
-    <div class="scroll-for-more"> scroll for more</div>
     <div class="footer">I love you infinitely... ❤️</div>
     <div class="last one">ဒါနဲ့ react ကို အများကြီး လုပ်လို့ရ‌‌‌အောင်ထည့်ထားတယ်‌နော် ဟဲဟဲ</div>
 
@@ -184,6 +215,16 @@
             theme: 'night'
         };
 
+        // Scroll Logic to hide indicator
+        window.addEventListener('scroll', () => {
+            const indicator = document.getElementById('scrollIndicator');
+            if (window.scrollY > 50) {
+                indicator.classList.add('scroll-hidden');
+            } else {
+                indicator.classList.remove('scroll-hidden');
+            }
+        });
+
         function toggleTheme() {
             state.theme = state.theme === 'night' ? 'day' : 'night';
             save();
@@ -195,22 +236,17 @@
         }
 
         function updateClock() {
-            // 1. SET BURMESE CURRENT TIME
             const now = new Date();
             const mmOffset = 6.5 * 60 * 60 * 1000;
             const mmNow = new Date(now.getTime() + (now.getTimezoneOffset() * 60000) + mmOffset);
-
-            // 2. SET START TIME (Dec 5, 2024, 00:00:00 Myanmar)
             const mmStart = new Date(2024, 11, 5, 0, 0, 0); 
 
-            // Calculate Total Days (Header)
             const diffMs = mmNow - mmStart;
             const totalDays = Math.floor(diffMs / (1000 * 60 * 60 * 24)) + 1;
             
             const counterEl = document.getElementById('counter');
             const durationEl = document.getElementById('duration');
 
-            // Anniversary Logic
             const isDec5 = (mmNow.getMonth() === 11 && mmNow.getDate() === 5);
             if (isDec5 && mmNow.getFullYear() > 2024) {
                 const yearsAnni = mmNow.getFullYear() - 2024;
@@ -220,7 +256,6 @@
                 counterEl.innerText = totalDays + " Days of Loving You";
             }
 
-            // 3. CALENDAR ACCURATE BREAKDOWN (Years, Months, Days, etc.)
             let y = mmNow.getFullYear() - mmStart.getFullYear();
             let m = mmNow.getMonth() - mmStart.getMonth();
             let d = mmNow.getDate() - mmStart.getDate();
@@ -261,11 +296,11 @@
                                 ${emoji} ${count}
                             </div>
                         `).join('')}
-                        <div class="add-react-btn" onclick="showPicker(event, '${card.id}')">
+                        <div class="add-react-btn" onclick="showPicker(event, '${card.id}')" style="cursor:pointer; opacity:0.6">
                             <i class="far fa-smile"></i>
                         </div>
                         <div class="emoji-panel" id="picker-${card.id}">
-                            ${emojis.map(e => `<span onclick="toggleReact('${card.id}', '${e}')">${e}</span>`).join('')}
+                            ${emojis.map(e => `<span onclick="toggleReact('${card.id}', '${e}')" style="cursor:pointer; font-size:1.2rem">${e}</span>`).join('')}
                         </div>
                     </div>
                 </div>
@@ -325,11 +360,4 @@
         window.onclick = () => document.querySelectorAll('.emoji-panel').forEach(p => p.style.display = 'none');
     </script>
 </body>
-
 </html>
-
-
-
-
-
-
