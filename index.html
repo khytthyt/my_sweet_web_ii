@@ -13,47 +13,58 @@
             --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        /* --- UPDATED SCROLL STYLE --- */
+        /* --- UPDATED SCROLL-FOR-MORE --- */
         .scroll-for-more {
             position: fixed;
             bottom: 30px;
             left: 50%;
             transform: translateX(-50%);
+            z-index: 1000;
+            
+            background: rgba(255, 77, 109, 0.1);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 77, 109, 0.3);
+            padding: 10px 20px;
+            border-radius: 50px;
+            
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 8px;
             cursor: pointer;
             transition: var(--transition);
-            z-index: 100;
-            font-weight: 600;
+            
             color: var(--primary);
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 1.5px;
             text-transform: uppercase;
-            letter-spacing: 2px;
-            font-size: 0.8rem;
         }
 
         .scroll-for-more i {
-            font-size: 1.2rem;
+            margin-top: 5px;
+            font-size: 1rem;
             transition: transform 0.3s ease;
         }
 
         .scroll-for-more:hover {
-            opacity: 0.7;
+            background: var(--primary);
+            color: white;
+            transform: translateX(-50%) translateY(-5px);
         }
 
         .scroll-for-more:hover i {
-            transform: translateY(5px);
+            transform: translateY(3px);
         }
 
-        /* Hide when scrolling down */
+        /* Logic to hide indicator when scrolling */
         .scroll-hidden {
             opacity: 0;
             pointer-events: none;
             transform: translateX(-50%) translateY(20px);
         }
-        /* --------------------------- */
 
+        /* --- REST OF YOUR ORIGINAL STYLE --- */
         body.night {
             background-color: #000;
             color: #fff;
@@ -170,8 +181,7 @@
         }
         @keyframes fly { to { transform: translateY(-150px) translateX(50px); opacity: 0; } }
 
-        .footer { padding: 100px 50px; text-align: center; font-family: 'Dancing Script', cursive; font-size: 2rem; }
-        
+        .footer { padding: 50px; text-align: center; font-family: 'Dancing Script', cursive; font-size: 2rem; }
         .last {padding: 50px; text-align: center; font-size: x-large; }
 
     </style>
@@ -191,7 +201,7 @@
     </section>
 
     <div class="scroll-for-more" id="scrollIndicator" onclick="window.scrollTo(0, window.innerHeight)">
-        <span>Scroll for magic</span>
+        <span>Scroll for more</span>
         <i class="fas fa-chevron-down"></i>
     </div>
 
@@ -215,10 +225,10 @@
             theme: 'night'
         };
 
-        // Scroll Logic to hide indicator
+        // Scroll listener to hide the "scroll for more" button
         window.addEventListener('scroll', () => {
             const indicator = document.getElementById('scrollIndicator');
-            if (window.scrollY > 50) {
+            if (window.scrollY > 100) {
                 indicator.classList.add('scroll-hidden');
             } else {
                 indicator.classList.remove('scroll-hidden');
@@ -296,11 +306,11 @@
                                 ${emoji} ${count}
                             </div>
                         `).join('')}
-                        <div class="add-react-btn" onclick="showPicker(event, '${card.id}')" style="cursor:pointer; opacity:0.6">
+                        <div class="add-react-btn" onclick="showPicker(event, '${card.id}')">
                             <i class="far fa-smile"></i>
                         </div>
                         <div class="emoji-panel" id="picker-${card.id}">
-                            ${emojis.map(e => `<span onclick="toggleReact('${card.id}', '${e}')" style="cursor:pointer; font-size:1.2rem">${e}</span>`).join('')}
+                            ${emojis.map(e => `<span onclick="toggleReact('${card.id}', '${e}')">${e}</span>`).join('')}
                         </div>
                     </div>
                 </div>
